@@ -62,7 +62,7 @@ def Content(Topic):
         messages.append({"role": "user", "content": f"{prompt}"})
 
         completion = client.chat.completions.create(
-            model="mixtral-8x7b-32769",
+            model="mixtral-8x7b-32768",
             messages=SystemChatBot + messages,
             max_tokens=2048,
             temperature=0.7,
@@ -246,4 +246,4 @@ async def Automation(commands: list[str]):
     
 if __name__ == "__main__":
     # List of commands
-    asyncio.run(Automation(input("comands :")))
+    asyncio.run(Automation([input(">>>")]))
