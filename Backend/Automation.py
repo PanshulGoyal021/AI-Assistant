@@ -125,18 +125,18 @@ def Content(Topic):
         language = next((lang for lang in file_extensions if lang in Topic), "python")
         extension = file_extensions[language]  # Retrieve the file extension based on the language.
         Topic = " ".join(Topic)
-        file = rf"data\{Topic.lower().replace(' ', '_')}{extension}"
+        file = rf"data\{Topic.lower().replace(' ', '_')}{extension}" # Retrieve the file extension based on the language
         ContentByAI = ContentByAI.split("\n")
         
         if f"```{language}" in ContentByAI:
             Starting = int(ContentByAI.index(f"```{language}") + 1)
         if "```" in ContentByAI:
             Ending = int(ContentByAI.index("```"))
-        ContentByAI  = ContentByAI[Starting:Ending]  
+        ContentByAI  = ContentByAI[Starting:Ending]  # Extract the code content.
         if ContentByAI:
-            ContentByAI = "\n".join(ContentByAI)
+            ContentByAI = "\n".join(ContentByAI) # Joins the code
         else:
-            print("ContentByAI not found")
+            print("Code not found")
         
     else:
         file = rf"Data\{Topic.lower().replace(' ', '_')}.txt"  # Construct the file name.
@@ -200,26 +200,39 @@ def CloseApp(app):
         close(app, match_closest=True, output=True, throw_error=True)  # Attempt to close the app.
     return True  # Indicate success.
 
-# Function to execute system-level commands.
+
 def System(command):
+    # Nested function to perform keyboard actions.
+    def click(key):
+        keyboard.press_and_release(key)
+        
     # Nested function to mute the system volume.
     def mute():
-        keyboard.press_and_release("volume mute")
+        click("volume mute")
 
     # Nested function to unmute the system volume.
     def unmute():
-        keyboard.press_and_release("volume mute")
+        click("volume mute")
 
     # Nested function to increase the system volume.
     def volume_up():
-        keyboard.press_and_release("volume up")
+        click("volume up")
 
     # Nested function to decrease the system volume.
     def volume_down():
-        keyboard.press_and_release("volume down")
+        click("volume down")
         
-    def pause():
-        keyboard.press_and_release("playplay/pause media")
+    # Nested function to play or pause media.
+    def play_pause():
+        click("playplay/pause media")
+        
+    # Nested function to play the next media track.
+    def next():
+        click("next track")
+    
+    # Nested function to play the previous media track.
+    def previous():
+        click("previous track")
 
     # Execute the appropriate command.
     if command == "mute":
@@ -231,7 +244,11 @@ def System(command):
     elif command == "volume down":
         volume_down()
     elif command == "pause" or command == "play":
-        pause()
+        play_pause()
+    elif command == "next":
+        next()
+    elif command == "previous":
+        previous()
 
     return True  # Indicate success.
 
