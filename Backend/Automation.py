@@ -132,9 +132,7 @@ def Content(Topic):
             Starting = int(ContentByAI.index(f"```{language}") + 1)
         if "```" in ContentByAI:
             Ending = int(ContentByAI.index("```"))
-                    
-        ContentByAI  = ContentByAI[Starting:Ending]
-                    
+        ContentByAI  = ContentByAI[Starting:Ending]  
         if ContentByAI:
             ContentByAI = "\n".join(ContentByAI)
         else:
