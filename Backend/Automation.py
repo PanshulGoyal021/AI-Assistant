@@ -146,7 +146,7 @@ def Content(Topic):
         f.close()
 
 
-    OpenNotepad(rf"Data\{Topic.lower().replace(' ', '')}.txt")  # Open the file in Notepad.
+    OpenNotepad(file)  # Open the file in Notepad.
     return True  # Indicate success.
 
 # Function to search for a topic on YouTube.
