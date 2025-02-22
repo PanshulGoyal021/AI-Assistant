@@ -46,6 +46,40 @@ SystemChatBot = [
     {"role": "system", "content": f"Hello, I am {os.environ['Username']}, You're a content writer. You have to write content like letters, codes, applications, essays, notes, songs, poems etc."}
 ]
 
+# Dictionary to store file extensions for different programming languages.
+file_extensions = {
+    "python": ".py",
+    "javascript": ".js",
+    "java": ".java",
+    "html": ".html",
+    "typescript": ".ts",
+    "css": ".css",
+    "php": ".php",
+    "swift": ".swift",
+    "kotlin": ".kt",
+    "ruby": ".rb",
+    "go": ".go",
+    "rust": ".rs",
+    "dart": ".dart",
+    "r": ".r",
+    "perl": ".pl",
+    "lua": ".lua",
+    "shell script": ".sh",
+    "objective-c": ".m",
+    "matlab": ".m",
+    "sql": ".sql",
+    "scala": ".scala",
+    "haskell": ".hs",
+    "pascal": ".pas",
+    "vb.net": ".vb",
+    "f#": ".fs",
+    "groovy": ".groovy",
+    "assembly": ".asm",
+    "c" : ".c",
+    "c++": ".cpp",
+    "c#": ".cs",
+}
+
 # Function to perform a Google search.
 def GoogleSearch(Topic):
     search(Topic)  # Use pywhatkit's search function to perform a Google search.
@@ -85,10 +119,34 @@ def Content(Topic):
     Topic = Topic.replace("Content", "")  # Remove "Content" from the topic.
     ContentByAI = ContentWriterAI(Topic)  # Generate content using AI.
 
-    # Save the generated content to a text file.
-    with open(rf"Data\{Topic.lower().replace(' ', '')}.txt", "w", encoding="utf-8") as file:
-        file.write(ContentByAI)  # Write the content to the file.
-        file.close()
+    # Save the generated content to a file.
+    if "code" in Topic:
+        Topic = Topic.split(" ")
+        language = next((lang for lang in file_extensions if lang in Topic), "python")
+        extension = file_extensions[language]  # Retrieve the file extension based on the language.
+        Topic = " ".join(Topic)
+        file = rf"data\{Topic.lower().replace(' ', '_')}{extension}"
+        ContentByAI = ContentByAI.split("\n")
+        
+        if f"```{language}" in ContentByAI:
+            Starting = int(ContentByAI.index(f"```{language}") + 1)
+        if "```" in ContentByAI:
+            Ending = int(ContentByAI.index("```"))
+                    
+        ContentByAI  = ContentByAI[Starting:Ending]
+                    
+        if ContentByAI:
+            ContentByAI = "\n".join(ContentByAI)
+        else:
+            print("ContentByAI not found")
+        
+    else:
+        file = rf"Data\{Topic.lower().replace(' ', '_')}.txt"  # Construct the file name.
+        
+    with open(file, "w", encoding="utf-8") as f:
+        f.write(ContentByAI)  # Write the content to the file.
+        f.close()
+
 
     OpenNotepad(rf"Data\{Topic.lower().replace(' ', '')}.txt")  # Open the file in Notepad.
     return True  # Indicate success.
